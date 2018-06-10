@@ -14,4 +14,4 @@ build/
 gradle*
 !gradle.properties
 !.idea/dictionaries/
-/captures
+!gradlew
