@@ -13,11 +13,10 @@ android:
     - platform-tools
     - build-tools-27.0.3
     - android-27
-licenses:
-  - ".+"
 before_install:
   - chmod +x gradlew
-script: "./gradlew build"
+script:
+  - ./gradlew clean test build
 deploy:
   provider: releases
   api_key:
