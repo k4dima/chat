@@ -1,20 +1,27 @@
 language: android
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 android:
   components:
-  - tools
-  - platform-tools
-  - build-tools-27.0.3
-  - android-27
+    - tools
+    - platform-tools
+    - build-tools-27.0.3
+    - android-27
 licenses:
-- android-sdk-license-.+
-- google-gdk-license-.+
+  - ".+"
 before_install:
-- chmod +x gradlew
+  - chmod +x gradlew
 script: "./gradlew build"
 deploy:
   provider: releases
   api_key:
     secure: ggufyN0TlWrSU3IuYr6MLfSBSd352RNMwhF6YY61dL6J6g7uoXkJgB73JGUNjhHPoQDGEM+HiU7vCelqUmcVpZQ7zck0kKIninSTNOTrt2G4peoqPazmdJHVbu73DW4B6kJvI9Kd8lF3BT5ZFA/oIk9FQQP/rq4XRTy0VXPqQAuHfbyaooCvVRBXxQPrjEKelY9+Afjxxwq9Ci6nB//TY7y9JRQ0PjwsaOBOeEGWmh2ly0klHr0+rtvrppvxCabWna0x51+EkXSPVCQMh/3rLu5m3Yev/4mJxYw0xjsjHqZUS59XNml30HW7IdoeEG+h3DvPbmofDgaDeZAgu2RPhRdlRkEFkA3qXIHk3gzYPcb++6tArn6igBX+Gd8lLsp5/2l080ipwq25MzK3tIYCLOKQSrFnAc7FpNBt1JJFpO1LdwgAokTK9fQght/rSxE3hr997N+NNrEfNlq2aouFOwMBxOirVwVVJCq1p5OsAvPxJROXZV+SEjqz7yliCXvEnudpTPR/gms/1d80zAjhr9lkbQRXhjNKKBABP1GJycjVMsBYUO293mT1jG3UiZxusckR7YxqpWQVpl9NnpIoTkRggXTWkRUXSU2pPgekLdio1FI4crsJIIpGZx9ivf9GMXBwZ1FgqJ9YQNqFwdNpEESBXuZy376Le5C/3+VEfC0=
-  file: "/app/build/outputs/apk/debug/app-debug.apk"
+  file: "app/build/outputs/apk/debug/app-debug.apk"
   on:
     repo: k4dima/chat
