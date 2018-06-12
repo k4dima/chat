@@ -1,27 +1,27 @@
 language: android
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+  - "$HOME/.android/build-cache"
 env:
   global:
-    - ANDROID_BUILD_TOOLS=27.0.3
-    - secure: D4wbF7Jx2LtZp1Hct3R51f2vOfUPp/HtHC2ZnQbiG19WjxrLvRP+uS+OAif9jiPGUxt29Bp1vbMOXi7O7fGk5JeAbazjz2wUK7Yj0BzGN3KMGL1Uw3vT75DmVRq4bjB1OE8+OjZca3F1/BQIdXF55VLv6WDnVHW7T50Nemu4NgJvjVKgEC2tqeexvBB7I4DX0adteyNMCcqL7iqqret3crHvHigaPHXu4SHGerXtfW6yHEJ/6zf+brQAsQSwxSc/s9OHOzMRiG7vguj6vXUTEiHxJJV4LTrmVPxY6eXzhg+XDLixXItoprI1FAnzHHOLdAwW3UIBjBhfWupyUY6zqzXDoMAEFfJBRoZD8gKdaoNzwPyg6MjKFHLMNYyygfqvrbJhtKBioja11CPAxP31CAOJ17gru5s+pjRXEAkPqnlAeLzLbGSuQFrsrB/JCwFdf5iPPlpj0j+CFCkmEw4f5cMANjmmDq91V8MMbyPkLJep04YqfjQJ8qmWD7Sqx4jhvIN1NBkWtq+aIoWQzhlxXD5QU8YfmroZOhMWxa6eszF9CfZ2XdaRr8OpJldeO4WR6EnH5MdqLwfZPEjEUIGzMJ8Q9RhRva2oQHZ5oFHrTRjIzb8u+CeKV28LTGqYbJpb6oTFScuNyIG8+PtNmHODNU7xI+mY1gWl0uGOySIDF2o=
+  - ANDROID_BUILD_TOOLS=27.0.3
+  - secure: RnUch0AyvRibBQP6UG1NWEs70Xe8w4c7ZBJiED6tEoExlCAUbk/3H5UNQGupuRzb4FmK/FWJqn6gliUxQlIgQ/Br0U84tiaQTMURWttiV9P5Tmwl9fsbWFFkeE0xgBDNnFFIDCwdi/iOkFS679JObhN9uzkxkgMKflYAW7NqRfywrDlFllY6Tmfe4wGcPonzRxsd+Y0KYrjgMGjvlY/WVeo+lLwoOaFTDTo3poylRCYiQ3doUmi5YhxgtcvdDik+TmMGEk6x/OzLrxMyafpZyCS3B7fodsRHlbfTVIRK0DGqNlA6IygOcg27YfOBjz1LaIbr4QlObU1C6MNubFEc6OYWJg1cptzXgOqiJtlEiEnYfe3n5frgsgDXvdl4JI8cBqIySjPwsaYrMU6j/DqgYF9wus1ZdYjftZ8njEfFdEcP3yBFB/fWPf3hZqKlyTG3zYUu/RZsPd7BztIo57lVk3qlqiOHOoRgsitpFcDDNMDiWmqX1zNgi0zxZN8Ntemb28apyKOlorOxZ2UrJy1zBuKHbVSTwnVBAZ85rdxLqWFaRQ3FCaZCF6XwLBzB9AcpW7IbLYE/9E6ULKptJgr2aqmWg/gWfl6p4u/N2sSmj67kH/7Caj2L8u77iDohpuVhy87ImVpFiSxx1f5BwzbLOkAlXg3Am4qz/sqj1er2HIQ=
 android:
   components:
-    - tools
-    - platform-tools
-    - build-tools-${ANDROID_BUILD_TOOLS}
-    - android-27
+  - tools
+  - platform-tools
+  - build-tools-${ANDROID_BUILD_TOOLS}
+  - android-27
 before_install:
-  - chmod +x gradlew
-  - chmod +x scripts/tag.sh
+- chmod +x gradlew
+- chmod +x scripts/tag.sh
 script:
-  - ./gradlew clean test build
+- "./gradlew clean test build"
 before_deploy:
 - cd app/build/outputs/apk/release
 - jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${TRAVIS_BUILD_DIR}/keystore.jks
