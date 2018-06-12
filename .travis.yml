@@ -7,20 +7,35 @@ cache:
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
     - $HOME/.android/build-cache
+env:
+  global:
+    - ANDROID_BUILD_TOOLS=27.0.3
+    - secure: D4wbF7Jx2LtZp1Hct3R51f2vOfUPp/HtHC2ZnQbiG19WjxrLvRP+uS+OAif9jiPGUxt29Bp1vbMOXi7O7fGk5JeAbazjz2wUK7Yj0BzGN3KMGL1Uw3vT75DmVRq4bjB1OE8+OjZca3F1/BQIdXF55VLv6WDnVHW7T50Nemu4NgJvjVKgEC2tqeexvBB7I4DX0adteyNMCcqL7iqqret3crHvHigaPHXu4SHGerXtfW6yHEJ/6zf+brQAsQSwxSc/s9OHOzMRiG7vguj6vXUTEiHxJJV4LTrmVPxY6eXzhg+XDLixXItoprI1FAnzHHOLdAwW3UIBjBhfWupyUY6zqzXDoMAEFfJBRoZD8gKdaoNzwPyg6MjKFHLMNYyygfqvrbJhtKBioja11CPAxP31CAOJ17gru5s+pjRXEAkPqnlAeLzLbGSuQFrsrB/JCwFdf5iPPlpj0j+CFCkmEw4f5cMANjmmDq91V8MMbyPkLJep04YqfjQJ8qmWD7Sqx4jhvIN1NBkWtq+aIoWQzhlxXD5QU8YfmroZOhMWxa6eszF9CfZ2XdaRr8OpJldeO4WR6EnH5MdqLwfZPEjEUIGzMJ8Q9RhRva2oQHZ5oFHrTRjIzb8u+CeKV28LTGqYbJpb6oTFScuNyIG8+PtNmHODNU7xI+mY1gWl0uGOySIDF2o=
 android:
   components:
     - tools
     - platform-tools
-    - build-tools-27.0.3
+    - build-tools-${ANDROID_BUILD_TOOLS}
     - android-27
 before_install:
   - chmod +x gradlew
 script:
   - ./gradlew clean test build
+before_deploy:
+- cd app/build/outputs/apk/release
+- jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore ${TRAVIS_BUILD_DIR}/keystore.jks
+  -storepass horizon -keypass horizon app-release-unsigned.apk chat
+- jarsigner -verify app-release-unsigned.apk
+- "${ANDROID_HOME}/build-tools/${ANDROID_BUILD_TOOLS}/zipalign -v 4 app-release-unsigned.apk
+  chat.apk"
+- cd -
+- scripts/tag.sh
 deploy:
   provider: releases
+  on:
+    branch: master
   api_key:
     secure: ggufyN0TlWrSU3IuYr6MLfSBSd352RNMwhF6YY61dL6J6g7uoXkJgB73JGUNjhHPoQDGEM+HiU7vCelqUmcVpZQ7zck0kKIninSTNOTrt2G4peoqPazmdJHVbu73DW4B6kJvI9Kd8lF3BT5ZFA/oIk9FQQP/rq4XRTy0VXPqQAuHfbyaooCvVRBXxQPrjEKelY9+Afjxxwq9Ci6nB//TY7y9JRQ0PjwsaOBOeEGWmh2ly0klHr0+rtvrppvxCabWna0x51+EkXSPVCQMh/3rLu5m3Yev/4mJxYw0xjsjHqZUS59XNml30HW7IdoeEG+h3DvPbmofDgaDeZAgu2RPhRdlRkEFkA3qXIHk3gzYPcb++6tArn6igBX+Gd8lLsp5/2l080ipwq25MzK3tIYCLOKQSrFnAc7FpNBt1JJFpO1LdwgAokTK9fQght/rSxE3hr997N+NNrEfNlq2aouFOwMBxOirVwVVJCq1p5OsAvPxJROXZV+SEjqz7yliCXvEnudpTPR/gms/1d80zAjhr9lkbQRXhjNKKBABP1GJycjVMsBYUO293mT1jG3UiZxusckR7YxqpWQVpl9NnpIoTkRggXTWkRUXSU2pPgekLdio1FI4crsJIIpGZx9ivf9GMXBwZ1FgqJ9YQNqFwdNpEESBXuZy376Le5C/3+VEfC0=
-  file: "app/build/outputs/apk/debug/app-debug.apk"
-  on:
-    repo: k4dima/chat
+  file: app/build/outputs/apk/release/chat.apk
+  overwrite: true
+  skip_cleanup: true
