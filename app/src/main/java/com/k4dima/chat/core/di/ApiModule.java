@@ -20,14 +20,14 @@ final class ApiModule {
     @NonNull
     @Singleton
     @Provides
-    static LemonadeService getLemonadeService(@NotNull Retrofit retrofit) {
+    static LemonadeService lemonadeService(@NotNull Retrofit retrofit) {
         return retrofit.create(LemonadeService.class);
     }
 
     @NonNull
     @Singleton
     @Provides
-    static Retrofit buildRetrofit(OkHttpClient okHttpClient) {
+    static Retrofit retrofit(OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl("https://api.lemonade.com/")
                 .client(okHttpClient)
