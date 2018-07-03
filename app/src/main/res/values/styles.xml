@@ -1,13 +1,12 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="AppTheme" parent="@style/Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="@style/Theme.AppCompat.Light">
         <!--<item name="android:windowTranslucentStatus">true</item>-->
-        <item name="android:textColorPrimary">@color/colorAccent</item>
-        <item name="android:navigationBarColor" tools:targetApi="21">@android:color/white</item>
+        <item name="android:navigationBarColor" tools:targetApi="21">@color/colorPrimary</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="28">true</item>
         <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
         <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorPrimaryDark">@color/colorPrimary</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 </resources>

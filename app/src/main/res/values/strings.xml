@@ -1,7 +1,15 @@
 <resources>
-    <string name="copied_message">Message copied!</string>
-    <string name="action_delete">Delete</string>
-    <string name="action_copy">Copy</string>
+    <string name="app_name">Chat</string>
     <string name="hint_enter_a_message">Type a message…</string>
-    <string name="app_name">Lemonade</string>
+    <string name="hello">Hello, I am a Server!</string>
+    <string name="name">What is your name?</string>
+    <string name="meet">Nice to meet you %1$s :)</string>
+    <string name="number">What is your phone number?</string>
+    <string name="agree">Do you agree to our terms of service?</string>
+    <string name="thanks">Thanks!</string>
+    <string name="last">This is the last step!</string>
+    <string name="todo">What do you want to do now?</string>
+    <string name="yes">YES</string>
+    <string name="exit">EXIT</string>
+    <string name="bye">Bye Bye!</string>
 </resources>
