@@ -1,4 +1,4 @@
-package com.k4dima.chat.core.di
+package com.k4dima.chat.core.di.messages
 
 import com.k4dima.chat.core.api.LemonadeService
 import dagger.Module
@@ -7,18 +7,17 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import javax.inject.Singleton
 
 @Module
 internal object ApiModule {
     @JvmStatic
-    @Singleton
+    @MessagesScope
     @Provides
     fun lemonadeService(retrofit: Retrofit) =
             retrofit.create(LemonadeService::class.java)!!
 
     @JvmStatic
-    @Singleton
+    @MessagesScope
     @Provides
     fun retrofit(okHttpClient: OkHttpClient) = Retrofit.Builder()
             .baseUrl("https://api.lemonade.com/")

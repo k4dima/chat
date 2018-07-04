@@ -1,32 +1,30 @@
-package com.k4dima.chat.core.di;
+package com.k4dima.chat.core.di.messages;
 
 import android.content.Context;
 
 import com.k4dima.chat.features.messages.MessagesActivity;
 import com.k4dima.chat.features.messages.MessagesView;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
 @Module
-public class MessagesActivityModule {
+public class MessagesModule {
     private final MessagesView messageView;
     private final Context context;
 
-    public MessagesActivityModule(MessagesActivity messagesActivity) {
+    public MessagesModule(MessagesActivity messagesActivity) {
         messageView = messagesActivity;
         context = messagesActivity;
     }
 
-    @Singleton
+    @MessagesScope
     @Provides
     Context provideContext() {
         return context;
     }
 
-    @Singleton
+    @MessagesScope
     @Provides
     MessagesView provideMessagesView() {
         return messageView;

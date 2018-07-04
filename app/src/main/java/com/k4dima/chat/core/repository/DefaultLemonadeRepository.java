@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import com.k4dima.chat.core.api.LemonadeService;
 import com.k4dima.chat.core.db.MessageDao;
+import com.k4dima.chat.core.di.messages.MessagesScope;
 import com.k4dima.chat.core.model.Message;
 import com.k4dima.chat.core.model.ResponseMessages;
 import com.k4dima.chat.core.utils.AppUtils;
@@ -11,7 +12,6 @@ import com.k4dima.chat.core.utils.AppUtils;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -20,7 +20,7 @@ import io.reactivex.schedulers.Schedulers;
 
 import static com.k4dima.chat.features.messages.MessagesActivity.START;
 
-@Singleton
+@MessagesScope
 public class DefaultLemonadeRepository implements LemonadeRepository {
     private MessageDao messageDao;
     private LemonadeService lemonadeService;

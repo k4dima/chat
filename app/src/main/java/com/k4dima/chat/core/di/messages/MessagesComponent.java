@@ -1,19 +1,17 @@
-package com.k4dima.chat.core.di;
+package com.k4dima.chat.core.di.messages;
 
 import com.k4dima.chat.features.messages.MessagesActivity;
 
-import javax.inject.Singleton;
-
 import dagger.Subcomponent;
 
-@Singleton
-@Subcomponent(modules = {MessagesActivityModule.class, RepositoryModule.class, ApiModule.class,
+@MessagesScope
+@Subcomponent(modules = {MessagesModule.class, RepositoryModule.class, ApiModule.class,
         OkHttpModule.class})
-public interface MessagesActivityComponent {
+public interface MessagesComponent {
     void inject(MessagesActivity messagesActivity);
     //@Subcomponent.Builder
     /*interface Builder {
-        MessagesActivityComponent build();
+        MessagesComponent build();
 
         @BindsInstance
         Builder activity(MessagesActivity messagesActivity);

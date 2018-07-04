@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.k4dima.chat.R;
+import com.k4dima.chat.core.di.messages.MessagesScope;
 import com.k4dima.chat.core.model.Message;
 import com.k4dima.chat.core.model.ResponseMessages;
 import com.k4dima.chat.core.model.User;
@@ -22,7 +23,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import okhttp3.Request;
 import okhttp3.Response;
@@ -31,8 +31,8 @@ import okio.BufferedSink;
 
 import static com.k4dima.chat.features.messages.MessagesActivity.START;
 
-@Singleton
-public class RequestsHandler {
+@MessagesScope
+class RequestsHandler {
     private static int step;
     private final Context context;
 

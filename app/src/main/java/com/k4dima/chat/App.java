@@ -3,8 +3,8 @@ package com.k4dima.chat;
 import android.app.Activity;
 import android.app.Application;
 
-import com.k4dima.chat.core.di.ApplicationComponent;
-import com.k4dima.chat.core.di.DaggerApplicationComponent;
+import com.k4dima.chat.core.di.app.ApplicationComponent;
+import com.k4dima.chat.core.di.app.DaggerApplicationComponent;
 
 import javax.inject.Inject;
 

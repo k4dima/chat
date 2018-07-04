@@ -7,18 +7,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
-import com.bumptech.glide.Glide;
 import com.k4dima.chat.App;
 import com.k4dima.chat.R;
-import com.k4dima.chat.core.di.MessagesActivityComponent;
-import com.k4dima.chat.core.di.MessagesActivityModule;
+import com.k4dima.chat.core.di.messages.MessagesComponent;
+import com.k4dima.chat.core.di.messages.MessagesModule;
 import com.k4dima.chat.core.model.Message;
 import com.k4dima.chat.core.model.ResponseMessages;
 import com.k4dima.chat.core.model.User;
-import com.stfalcon.chatkit.commons.ImageLoader;
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
 import com.stfalcon.chatkit.messages.MessagesListAdapter;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -27,16 +27,11 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MessagesActivity extends AppCompatActivity
-        implements MessageInput.InputListener,
-        MessagesListAdapter.OnLoadMoreListener,
-        MessagesView {
+public class MessagesActivity extends AppCompatActivity implements MessagesView {
     public static final String START = ":start";
-    protected final String senderId = "0";
-    protected ImageLoader imageLoader;
-    protected MessagesListAdapter<Message> messagesAdapter;
+    private static final String senderId = "0";
     @Inject
-    MessagesPresenter messagesPresenter;
+    MessagesPresenter presenter;
     int selectionCount;
     @BindView(R.id.messagesList)
     MessagesList messagesList;
@@ -44,45 +39,41 @@ public class MessagesActivity extends AppCompatActivity
     MessageInput input;
     @BindView(R.id.select)
     LinearLayout select;
+    private MessagesListAdapter<Message> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.messages_activity);
         //AndroidInjection.inject(this);
-        MessagesActivityComponent messagesActivityComponent =
-                App.applicationComponent.plusMessagesActivityComponent(new MessagesActivityModule(this));
-        messagesActivityComponent.inject(this);
-        imageLoader = (imageView, url) -> Glide
-                .with(this)
-                .load(url)
-                .into(imageView);
+        MessagesComponent messagesComponent =
+                App.applicationComponent.plusMessagesActivityComponent(new MessagesModule(this));
+        messagesComponent.inject(this);
         ButterKnife.bind(this);
-        messagesAdapter = new MessagesListAdapter<>(senderId, null);
-        messagesAdapter.setLoadMoreListener(this);
-        messagesList.setAdapter(messagesAdapter);
-        input.setInputListener(this);
+        adapter = new MessagesListAdapter<>(senderId, null);
+        adapter.setLoadMoreListener((page, totalItemsCount) -> {
+            if (page == 1)
+                presenter.savedMessages();
+        });
+        messagesList.setAdapter(adapter);
+        input.setInputListener(input -> {
+            send(input.toString());
+            return true;
+        });
         send(START);
     }
 
     @Override
     public void onBackPressed() {
-        if (selectionCount == 0) {
+        if (selectionCount == 0)
             super.onBackPressed();
-        } else {
-            messagesAdapter.unselectAllItems();
-        }
-    }
-
-    @Override
-    public void onLoadMore(int page, int totalItemsCount) {
-        if (page == 1)
-            messagesPresenter.savedMessages();
+        else
+            adapter.unselectAllItems();
     }
 
     @Override
     public void addMessagesToEnd(List<Message> messages) {
-        messagesAdapter.addToEnd(messages, true);
+        adapter.addToEnd(messages, true);
     }
 
     @Override
@@ -93,10 +84,10 @@ public class MessagesActivity extends AppCompatActivity
     }
 
     public void addMessage(Message message) {
-        messagesAdapter.addToStart(message, true);
+        adapter.addToStart(message, true);
     }
 
-    public void setInput(ResponseMessages responseMessages) {
+    private void setInput(@NotNull ResponseMessages responseMessages) {
         ResponseMessages.ChatInputType chatInputType = responseMessages.getChatInputType();
         switch (chatInputType) {
             case TEXT:
@@ -121,13 +112,7 @@ public class MessagesActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onSubmit(CharSequence input) {
-        send(input.toString());
-        return true;
-    }
-
     private void send(String text) {
-        messagesPresenter.send(new Message(new User(senderId, "Me"), text));
+        presenter.send(new Message(new User(senderId, "Me"), text));
     }
 }
