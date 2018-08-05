@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
@@ -9,13 +10,14 @@
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        app:outcomingDefaultBubbleColor="#4A4A4A" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_marginLeft="@dimen/chat_margin"
+        android:layout_marginRight="@dimen/chat_margin"
         android:background="@color/gray_light" />
 
     <LinearLayout
@@ -23,25 +25,36 @@
         style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/chat_margin"
+        android:layout_marginRight="@dimen/chat_margin"
+        android:background="#F7F7F7"
         android:orientation="horizontal"
-        android:visibility="gone">
+        android:visibility="gone"
+        tools:visibility="visible">
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:text="No" />
 
         <Button
             style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:text="Yes" />
     </LinearLayout>
 
     <com.stfalcon.chatkit.messages.MessageInput
         android:id="@+id/input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:inputButtonDefaultBgColor="@color/transparent"
+        app:inputButtonDefaultBgDisabledColor="@color/transparent"
+        app:inputButtonDefaultBgPressedColor="@color/transparent"
+        app:inputButtonDefaultIconColor="@color/colorAccent"
+        app:inputButtonDefaultIconPressedColor="@color/colorAccent"
         app:inputHint="@string/hint_enter_a_message" />
 </LinearLayout>

@@ -1,6 +1,7 @@
-package com.k4dima.chat.core.di.messages
+package com.k4dima.chat.features.messages.api
 
 import com.k4dima.chat.core.api.LemonadeService
+import com.k4dima.chat.features.messages.di.MessagesScope
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -9,7 +10,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Module
-internal object ApiModule {
+internal object ApiFactory {
     @JvmStatic
     @MessagesScope
     @Provides
