@@ -7,9 +7,7 @@ import android.support.test.uiautomator.BySelector
 import android.support.test.uiautomator.UiDevice
 import android.support.test.uiautomator.Until
 import com.k4dima.chat.BuildConfig.APPLICATION_ID
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.equalTo
-import org.junit.Assert.assertThat
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -23,6 +21,7 @@ class WalkthroughTest {
     fun startMainActivity() {
         val intent = context.packageManager.getLaunchIntentForPackage(APPLICATION_ID)
         context.startActivity(intent)
+        device.wait(Until.hasObject(By.pkg(APPLICATION_ID).depth(0)), 5000)
     }
 
     @Test
@@ -57,7 +56,7 @@ class WalkthroughTest {
 
     private fun checkPrevious(id: Int) = checkPrevious(string(id))
 
-    private fun checkPrevious(match: String) = check(message(2), match)
+    private fun checkPrevious(match: String) = assertEquals(message(2), match)
 
     private fun checkLast(id: Int) = check(1, id)
 
@@ -76,9 +75,7 @@ class WalkthroughTest {
 
     private fun uiObject(resourceId: String) = find(selector(resourceId))
 
-    private fun check(actual: String, match: String) = assertThat(actual, `is`(equalTo(match)))
-
-    private fun check(index: Int, id: Int) = check(message(index), string(id))
+    private fun check(index: Int, id: Int) = assertEquals(message(index), string(id))
 
     private fun selector(resourceId: String) = By.res(APPLICATION_ID, resourceId)
 
