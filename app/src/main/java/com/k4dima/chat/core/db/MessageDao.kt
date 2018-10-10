@@ -1,8 +1,8 @@
 package com.k4dima.chat.core.db
 
-import android.arch.persistence.room.Dao
-import android.arch.persistence.room.Insert
-import android.arch.persistence.room.Query
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
 
 import com.k4dima.chat.core.model.Message
 

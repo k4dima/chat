@@ -1,6 +1,6 @@
 package com.k4dima.chat.features.messages.repository
 
-import android.arch.persistence.room.Room
+import androidx.room.Room
 import android.content.Context
 import com.k4dima.chat.core.db.AppDatabase
 import com.k4dima.chat.features.messages.di.MessagesScope
