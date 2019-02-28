@@ -3,14 +3,14 @@
     package="com.k4dima.chat">
 
     <application
-        android:name=".features.app.App"
+        android:name=".app.Chat"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <activity
-            android:name=".features.messages.MessagesActivity"
+            android:name=".messages.MessagesActivity"
             android:configChanges="orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

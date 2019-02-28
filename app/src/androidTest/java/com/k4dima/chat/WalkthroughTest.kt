@@ -1,87 +1,74 @@
 package com.k4dima.chat
 
-import androidx.test.InstrumentationRegistry
-import androidx.test.runner.AndroidJUnit4
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
-import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.UiDevice
-import androidx.test.uiautomator.Until
+import androidx.test.uiautomator.UiSelector
 import com.k4dima.chat.BuildConfig.APPLICATION_ID
-import org.junit.Assert.assertEquals
-import org.junit.Before
+import com.k4dima.chat.R.string.*
+import com.k4dima.chat.app.Chat
+import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.TimeUnit.SECONDS
 
 @RunWith(AndroidJUnit4::class)
 class WalkthroughTest {
+    private val timeout = SECONDS.toMillis(3)
     private val device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
-    private val context = InstrumentationRegistry.getTargetContext()
-
-    @Before
-    fun startMainActivity() {
-        val intent = context.packageManager.getLaunchIntentForPackage(APPLICATION_ID)
-        context.startActivity(intent)
-        device.wait(Until.hasObject(By.pkg(APPLICATION_ID).depth(0)), 5000)
-    }
+    private val context = ApplicationProvider.getApplicationContext<Chat>()
 
     @Test
     fun testWalkthrough() {
-        checkPrevious(R.string.hello)
-        checkLast(R.string.name)
-        val name = "Dima"
-        text(name)
-        send()
-        sleep()
-        checkPrevious(context.getString(R.string.meet, name))
-        checkLast(R.string.number)
-        text("0633289001")
-        send()
-        sleep()
-        click(R.string.yes)
-        sleep()
-        check(3, R.string.thanks)
-        checkPrevious(R.string.last)
-        checkLast(R.string.todo)
-        click(R.string.exit)
-        sleep()
-        checkLast(R.string.bye)
-        sleep()
+        // hello
+        context.packageManager.getLaunchIntentForPackage(APPLICATION_ID)
+                .run { context.startActivity(this) }
+        checkLastMessage(hello)
+        // name
+        checkLastMessage(name)
+        "Dima".run {
+            text(this)
+            checkLastMessages(context.getString(meet, this))
+        }
+        // number
+        checkLastMessage(number)
+        text("+380633289001")
+        // terms
+        checkLastMessage(agree)
+        click(yes)
+        checkLastMessage(thanks)
+        // Do
+        checkLastMessage(last, todo)
+        click(exit)
+        checkLastMessage(bye)
     }
 
-    private fun click(id: Int) = find(By.text(string(id))).click()
+    private fun checkLastMessage(vararg expectedMessages: Int) =
+            expectedMessages.map { string(it) }
+                    .toTypedArray()
+                    .run { checkLastMessages(*this) }
 
-    private fun find(selector: BySelector) = device.findObject(selector)
+    private fun checkLastMessages(vararg expectedMessages: String) =
+            expectedMessages.map {
+                device.findObject(UiSelector().text(it)).waitForExists(timeout)
+            }
+                    .forEach { assertTrue(it) }
+
+    private fun click(id: Int) =
+            device.findObject(UiSelector().text(string(id)))
+                    .run {
+                        waitForExists(timeout)
+                        click()
+                    }
 
     private fun string(id: Int) = context.getString(id)
 
-    private fun checkPrevious(id: Int) = checkPrevious(string(id))
-
-    private fun checkPrevious(match: String) = assertEquals(message(2), match)
-
-    private fun checkLast(id: Int) = check(1, id)
-
-    private fun sleep() =
-            try {
-                Thread.sleep(3000)
-            } catch (e: InterruptedException) {
-                e.printStackTrace()
-            }
-
-    private fun send() = uiObject("messageSendButton").click()
-
     private fun text(text: String) {
         uiObject("messageInput").text = text
+        uiObject("messageSendButton").click()
     }
 
-    private fun uiObject(resourceId: String) = find(selector(resourceId))
-
-    private fun check(index: Int, id: Int) = assertEquals(message(index), string(id))
-
-    private fun selector(resourceId: String) = By.res(APPLICATION_ID, resourceId)
-
-    private fun message(position: Int): String {
-        val messageTexts = device.wait(Until.findObjects(selector("messageText")), 500)
-        val size = messageTexts.size
-        return messageTexts[size - position].text
-    }
+    private fun uiObject(resourceId: String) = device.findObject(By.res(APPLICATION_ID, resourceId))
 }
